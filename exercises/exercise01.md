@@ -27,9 +27,9 @@
 Why were these data types selected?
 
 ### Answer
-_The `country.Population` column uses the `INT` data type, while `country.LifeExpectancy` uses `DECIMAL(3,1)`.
+_The `country.Population` column uses the `INT` data type, while `country.LifeExpectancy` uses `DECIMAL(3,1)`._
 
-`INT` is used for population because it represents whole numbers, while `DECIMAL(3,1)` is used for life expectancy because it requires decimal precision. Each data type fits the kind of values stored in the column._
+_`INT` is used for population because it represents whole numbers, while `DECIMAL(3,1)` is used for life expectancy because it requires decimal precision. Each data type fits the kind of values stored in the column._
 
 ### Screenshot
 _Show the table structure or DESCRIBE output._
@@ -48,9 +48,9 @@ DESCRIBE country;
 Why do you think this data type was selected?
 
 ### Answer
-_The data type of `country.IndepYear` is `SMALLINT`.
+_The data type of `country.IndepYear` is `SMALLINT`._
 
-This data type was selected because independence years are stored as numeric year values and do not require a large range. Using `SMALLINT` is efficient and appropriate for storing year information. The column allows `NULL` values because some countries do not have an independence year._
+_This data type was selected because independence years are stored as numeric year values and do not require a large range. Using `SMALLINT` is efficient and appropriate for storing year information. The column allows `NULL` values because some countries do not have an independence year._
 
 ### Screenshot
 
@@ -68,9 +68,9 @@ DESCRIBE country;
 Explain why your proposed data type might be better in some situations.
 
 ### Answer
-_A possible alternative data type for `country.IndepYear` could be `YEAR`.
+_A possible alternative data type for `country.IndepYear` could be `YEAR`._
 
-The `YEAR` data type is designed specifically to store year values, which makes it clear that the column represents a year. In some situations, this can improve readability and make the data easier to understand when working with dates._
+_The `YEAR` data type is designed specifically to store year values, which makes it clear that the column represents a year. In some situations, this can improve readability and make the data easier to understand when working with dates._
 
 ---
 
