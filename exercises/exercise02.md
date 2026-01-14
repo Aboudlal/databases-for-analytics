@@ -1,6 +1,6 @@
 # Exercise 02: World Database – Joins, Grouping, and Data Quality
 
-- Name:
+- Name: Abdellah Boudlal
 - Course: Database for Analytics
 - Module: 2
 - Database Used: World Database (PostgreSQL)
@@ -29,7 +29,9 @@ _Write the number of cities imported._
 _Show evidence of how you determined this (for example, a COUNT query)._
 
 ```sql
--- Your SQL here
+SELECT COUNT(*) AS total_cities
+FROM city;
+
 ```
 
 ![Q1 Screenshot](screenshots/q1_city_count.png)
@@ -43,7 +45,14 @@ Using the World database, write the SQL command to **display each country name a
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT 
+    country.Name AS CountryName,
+    countrylanguage.Language AS Language
+FROM country
+JOIN countrylanguage
+    ON country.Code = countrylanguage.CountryCode
+ORDER BY country.Name, countrylanguage.Language;
+
 ```
 
 ### Screenshot
@@ -59,7 +68,15 @@ Using the World database, write the SQL command to **display each country name a
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT 
+    country.Name AS CountryName,
+    countrylanguage.Language AS OfficialLanguage
+FROM country
+JOIN countrylanguage
+    ON country.Code = countrylanguage.CountryCode
+WHERE countrylanguage.IsOfficial = 'T'
+ORDER BY country.Name, countrylanguage.Language;
+
 ```
 
 ### Screenshot
@@ -88,7 +105,7 @@ ON country.code = countrylanguage.countrycode;
 **In your own words**, describe what data the **second query returns that the first query does not**.
 
 ### Answer
-_Write your explanation here._
+_The second query returns all countries, including those without any matching languages (showing NULL values), while the first query returns only countries that have matching records in countrylanguage._
 
 ---
 
@@ -100,7 +117,10 @@ Do **not** repeat any form of government more than once.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT DISTINCT GovernmentForm
+FROM country
+ORDER BY GovernmentForm;
+
 ```
 
 ### Screenshot
@@ -117,7 +137,13 @@ Label the column **"City or Country Name"**.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT Name AS "City or Country Name"
+FROM city
+UNION
+SELECT Name
+FROM country
+ORDER BY "City or Country Name";
+
 ```
 
 ### Screenshot
@@ -169,7 +195,17 @@ Using the World database, write the SQL command to **list countries that have mo
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT 
+    country.Name AS CountryName,
+    COUNT(countrylanguage.Language) AS NumberOfOfficialLanguages
+FROM country
+JOIN countrylanguage
+    ON country.Code = countrylanguage.CountryCode
+WHERE countrylanguage.IsOfficial = 'T'
+GROUP BY country.Name
+HAVING COUNT(countrylanguage.Language) > 2
+ORDER BY country.Name;
+
 ```
 
 ### Screenshot
@@ -187,7 +223,11 @@ Using the World database, write the SQL command to **find cities where the distr
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT Name AS CityName, District
+FROM city
+WHERE District IS NULL
+   OR District LIKE '-';
+
 ```
 
 ### Screenshot
@@ -205,7 +245,16 @@ Using the World database, write the SQL command to **calculate the percentage of
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT 
+    ROUND(
+        (COUNT(CASE 
+            WHEN District IS NULL OR District = '-' 
+            THEN 1 
+        END) * 100.0) / COUNT(*),
+        2
+    ) AS PercentageMissingDistrict
+FROM city;
+
 ```
 
 ### Screenshot
