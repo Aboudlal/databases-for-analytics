@@ -160,7 +160,15 @@ Be sure to **sort by country name**.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT 
+    country.Name AS CountryName,
+    COUNT(countrylanguage.Language) AS NumberOfLanguages
+FROM country
+LEFT JOIN countrylanguage
+    ON country.Code = countrylanguage.CountryCode
+GROUP BY country.Name
+ORDER BY country.Name;
+
 ```
 
 ### Screenshot
@@ -177,7 +185,13 @@ Be sure to **sort by language name**.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT 
+    countrylanguage.Language AS Language,
+    COUNT(countrylanguage.CountryCode) AS NumberOfCountries
+FROM countrylanguage
+GROUP BY countrylanguage.Language
+ORDER BY countrylanguage.Language;
+
 ```
 
 ### Screenshot
