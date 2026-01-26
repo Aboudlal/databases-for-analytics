@@ -27,14 +27,11 @@ When importing the documents from `restaurants-json.json`, **how many documents 
 _25358_
 
 ### Screenshot
-_Show evidence of how you determined this (for example, a count query)._
+![Q1 Screenshot](screenshots/q1_document_count1.png)
 
 ```javascript
 db.restaurants.countDocuments()
 ```
-
-![Q1 Screenshot](screenshots/q1_document_count1.png)
-
 ---
 
 ## Question 2
@@ -44,7 +41,7 @@ Before writing queries on the data, **what command do you use to set the MongoDB
 ### MongoDB Command
 
 ```javascript
-// Your MongoDB command here
+use 44661
 ```
 
 ### Screenshot
@@ -60,7 +57,7 @@ Using your `restaurants` collection in the `44661` database, write the MongoDB q
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.find({ borough: "Queens" })
 ```
 
 ### Screenshot
@@ -76,7 +73,7 @@ Using your `restaurants` collection in the `44661` database, write the MongoDB q
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.countDocuments({ borough: "Queens" })
 ```
 
 ### Screenshot
@@ -92,7 +89,7 @@ Using your `restaurants` collection in the `44661` database, write the MongoDB q
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.countDocuments({ borough: "Queens", cuisine: "Hamburgers" })
 ```
 
 ### Screenshot
@@ -110,7 +107,7 @@ Using your `restaurants` collection in the `44661` database, write the MongoDB q
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.countDocuments({ "address.zipcode": "10460" })
 ```
 
 ### Screenshot
@@ -139,7 +136,10 @@ Your output should resemble:
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.find(
+  { "address.zipcode": "10460" },
+  { name: 1, _id: 0 }
+)
 ```
 
 ### Screenshot
@@ -159,7 +159,10 @@ Your results should include:
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.find(
+  { name: { $regex: "IHOP", $options: "i" } },
+  { name: 1, _id: 0 }
+)
 ```
 
 ### Screenshot
