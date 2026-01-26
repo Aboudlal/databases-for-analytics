@@ -1,6 +1,6 @@
 # Exercise 03: MongoDB – Document Queries and Analysis
 
-- Name:Abdellah Boudlal
+- Name: Abdellah Boudlal
 - Course: Database for Analytics
 - Module: 3
 - Database Used: MongoDB
@@ -30,10 +30,10 @@ _25358_
 _Show evidence of how you determined this (for example, a count query)._
 
 ```javascript
-// db.restaurants.countDocuments()
+db.restaurants.countDocuments()
 ```
 
-![Q1 Screenshot](screenshots/q1_document_count.png)
+![Q1 Screenshot](screenshots/q1_document_count1.png)
 
 ---
 
