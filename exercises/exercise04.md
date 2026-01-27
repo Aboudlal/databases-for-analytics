@@ -1,6 +1,6 @@
 # Exercise 04: Advanced SQL, Jupyter, and Visualization
 
-- Name:
+- Name: Abdellah Boudlal
 - Course: Database for Analytics
 - Module:
 - Database Used: World Database
@@ -31,7 +31,16 @@ Considering the World database, write a SQL statement that will **display the na
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT
+    c.Name AS name,
+    COUNT(*) AS num_languages
+FROM country c
+JOIN countrylanguage cl
+    ON c.Code = cl.CountryCode
+WHERE cl.IsOfficial = 'T'
+GROUP BY c.Name
+HAVING COUNT(*) > 2
+ORDER BY num_languages DESC;
 ```
 
 ### Screenshot
@@ -49,7 +58,17 @@ After the `create_engine` command is executed, **what are the three statements r
 ### Python Code
 
 ```python
-# Your three Python statements here
+query = """
+SELECT c.Name AS name, COUNT(*) AS num_languages
+FROM country c
+JOIN countrylanguage cl ON c.Code = cl.CountryCode
+WHERE cl.IsOfficial = 'T'
+GROUP BY c.Name
+HAVING COUNT(*) > 2
+ORDER BY num_languages DESC;
+"""
+df = pd.read_sql(query, engine)
+df
 ```
 
 ### Screenshot
@@ -69,7 +88,24 @@ Using **Jupyter Notebooks**, write the Python code needed to produce the followi
 ### Python Code
 
 ```python
-# Your Python code here
+import matplotlib.pyplot as plt
+
+x = range(len(df))
+
+fig, ax = plt.subplots(figsize=(6, 6))  # plus haut pour laisser place aux noms
+ax.bar(x, df["num_languages"], label="num_languages")
+
+ax.set_xlabel("Country name")
+ax.set_ylabel("Number of official languages")
+
+# noms collés aux barres (même positions)
+ax.set_xticks(list(x))
+ax.set_xticklabels(df["name"], rotation=90)
+
+ax.legend()
+
+
+plt.show()
 ```
 
 ### Screenshot
