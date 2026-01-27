@@ -92,13 +92,13 @@ import matplotlib.pyplot as plt
 
 x = range(len(df))
 
-fig, ax = plt.subplots(figsize=(6, 6))  # plus haut pour laisser place aux noms
+fig, ax = plt.subplots(figsize=(6, 6))  
 ax.bar(x, df["num_languages"], label="num_languages")
 
 ax.set_xlabel("Country name")
 ax.set_ylabel("Number of official languages")
 
-# noms collés aux barres (même positions)
+
 ax.set_xticks(list(x))
 ax.set_xticklabels(df["name"], rotation=90)
 
