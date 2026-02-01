@@ -2,7 +2,7 @@
 
 - Name: Abdellah Boudlal
 - Course: Database for Analytics
-- Module:
+- Module: 5
 - Database Used:  `sqlda` (Sample Datasets)
 - Tools Used: PostgreSQL (pgAdmin or psql)
 
