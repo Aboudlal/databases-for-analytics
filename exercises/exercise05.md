@@ -240,7 +240,7 @@ ORDER BY dealership_id;
 
 ### Screenshot
 
-![Q7 Screenshot](screenshots/q7_salespeople_array_by_dealership.png)
+![Q7 Screenshot](screenshots/q7_salespeople_array_by_dealership1.png)
 
 ---
 
