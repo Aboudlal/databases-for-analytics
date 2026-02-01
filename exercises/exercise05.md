@@ -1,6 +1,6 @@
 # Exercise 05: SQLDA Database - Dates, Data Quality, Arrays, and JSON
 
-- Name:
+- Name: Abdellah Boudlal
 - Course: Database for Analytics
 - Module:
 - Database Used:  `sqlda` (Sample Datasets)
@@ -42,7 +42,10 @@ year
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT DISTINCT
+    EXTRACT(YEAR FROM sent_date) AS year
+FROM emails
+ORDER BY year;
 ```
 
 ### Screenshot
@@ -65,7 +68,13 @@ count   year
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT
+    COUNT(*) AS count,
+    EXTRACT(YEAR FROM sent_date) AS year
+FROM emails
+WHERE sent_date IS NOT NULL
+GROUP BY year
+ORDER BY year;
 ```
 
 ### Screenshot
@@ -86,7 +95,13 @@ Only include emails that contain **both** a sent date and an opened date.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT
+    sent_date,
+    opened_date,
+    opened_date - sent_date AS interval
+FROM emails
+WHERE sent_date IS NOT NULL
+  AND opened_date IS NOT NULL;
 ```
 
 ### Screenshot
@@ -102,7 +117,14 @@ Using the `sqlda` database, write the SQL needed to show emails that contain an 
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT 
+     email_subject,
+	 opened_date,
+	 sent_date
+FROM emails
+WHERE opened_date IS NOT NULL
+  AND sent_date IS NOT NULL
+  AND opened_date < sent_date;
 ```
 
 ### Screenshot
@@ -119,7 +141,11 @@ After looking at the data, **why is this the case?**
 
 ### Answer
 
-_Write your explanation here._
+_Because sent_date isn’t the real “sent timestamp” in this dataset._
+
+_When you look at the rows, sent_date is always 15:00:00 (same time for many emails). That’s a big sign it was imported/converted with a default time (or shifted by a timezone conversion) instead of the actual send time._
+
+_So opened_date has the real open time (ex: 13:12, 14:35, etc.), and if the email was opened earlier in the day, it can show as opened_date < sent_date even though the email was obviously sent first._
 
 ### Screenshot (if requested by instructor)
 
@@ -160,7 +186,28 @@ CREATE TEMP TABLE customer_dealership_distance AS (
 
 ### Answer
 
-_Write your explanation here._
+This code creates _three temporary tables_ to calculate distances between _customers_ and _dealerships_.
+
+### 1) _customer_points_
+- Creates a temporary table that stores each _customer_id_
+- Converts each customer’s _longitude_ and _latitude_ into a PostgreSQL _point_
+- Filters out records where _longitude_ or _latitude_ is _NULL_
+
+This results in a clean list of customer location points.
+
+### 2) _dealership_points_
+- Creates a temporary table that stores each _dealership_id_
+- Converts each dealership’s _longitude_ and _latitude_ into a PostgreSQL _point_
+
+This produces a list of dealership location points.
+
+### 3) _customer_dealership_distance_
+- Uses a _CROSS JOIN_ to match _every customer_ with _every dealership_
+- Calculates the distance between customer and dealership points using: `c.lng_lat_point <@> d.lng_lat_point`
+- Stores the results as _customer_id_, _dealership_id_, and _distance_
+
+In short, the final table contains the _distance from each customer to every dealership_.
+
 
 ---
 
@@ -177,7 +224,18 @@ For example - dealership 1 is below:
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT
+    dealership_id,
+    ARRAY_AGG(salesperson_name ORDER BY salesperson_name) AS salespeople
+FROM (
+    SELECT
+        dealership_id,
+        last_name || ',' || first_name AS salesperson_name
+    FROM salespeople
+) sp
+GROUP BY dealership_id
+ORDER BY dealership_id;
+
 ```
 
 ### Screenshot
@@ -202,7 +260,17 @@ Reference image:
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT
+    d.dealership_id,
+    d.state,
+    COUNT(s.salesperson_id) AS salesperson_count,
+    ARRAY_AGG(s.last_name || ',' || s.first_name ORDER BY s.last_name, s.first_name) AS salespeople
+FROM dealerships d
+JOIN salespeople s
+    ON s.dealership_id = d.dealership_id
+GROUP BY d.dealership_id, d.state
+ORDER BY d.state, d.dealership_id;
+
 ```
 
 ### Screenshot
@@ -218,7 +286,8 @@ Using the `sqlda` database, write the SQL needed to convert the **customers** ta
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT json_agg(row_to_json(c))
+FROM customers c;
 ```
 
 ### Screenshot
@@ -244,7 +313,20 @@ Reference image:
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT json_agg(row_to_json(t))
+FROM (
+    SELECT
+        d.dealership_id,
+        d.state,
+        ARRAY_AGG(s.last_name || ',' || s.first_name ORDER BY s.last_name, s.first_name) AS salespeople,
+        COUNT(s.salesperson_id) AS salesperson_count
+    FROM dealerships d
+    JOIN salespeople s
+      ON d.dealership_id = s.dealership_id
+    GROUP BY d.dealership_id, d.state
+    ORDER BY d.state, d.dealership_id
+) t;
+
 ```
 
 ### Screenshot
