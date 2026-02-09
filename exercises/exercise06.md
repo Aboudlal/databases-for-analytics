@@ -1,7 +1,7 @@
 # Module 6 - Exercise 1: Creating a Data Warehouse
 From the Operational Model to the Dimensional Model
 
-- Name:
+- Name: Abdellah Boudlal
 - Course: Database for Analytics
 - Module: 6
 
@@ -121,4 +121,26 @@ In 1-2 short paragraphs, explain:
 
 #### Design Notes
 
-_Write your design notes here._
+## 2) Design Notes
+
+### What dimensions you chose and why
+
+I selected three main dimensions: **Date, Customer, and Part** because they represent the core business subjects needed to analyze daily sales.
+
+The **Date dimension** allows analysis by day, month, quarter, and year, which helps identify sales trends over time. The **Customer dimension** includes customer details such as name and zip code, supporting analysis of customer spending behavior and regional revenue. The **Part dimension** contains product information such as part number, description, and category, enabling analysis of product performance and category sales.
+
+---
+
+### Why your fact table grain is daily sales
+
+The fact table uses a **daily sales grain** because the assignment requires analysis at the day level rather than at the individual order level.
+
+Each record in the fact table represents the total quantity sold and total revenue generated for a specific product, purchased by a specific customer, on a specific date. This level of aggregation ensures consistent reporting and supports accurate calculation of daily averages and time-based metrics.
+
+---
+
+### How your design supports at least 3 required analytics questions
+
+This design supports several analytical questions. For example, it can determine how many units of a specific product were sold on a particular date by filtering the Part and Date dimensions.
+
+It can also calculate how much a customer spent over a time period by filtering the Customer and Date dimensions and summing the amount measure. Additionally, the model supports calculating average daily sales or total revenue by product category during a specific quarter, since the fact table connects directly to all relevant dimensions.
